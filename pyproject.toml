@@ -1,0 +1,25 @@
+[project]
+name = "niri-companion"
+version = "0.1.0"
+description = "Niri companion scripts"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+  "pydantic>=2.11.7",
+]
+
+[project.urls]
+Documentation = "https://github.com/dybdeskarphet/niri-companion"
+Issues = "https://github.com/dybdeskarphet/niri-companion/issues"
+Repository = "https://github.com/dybdeskarphet/niri-companion"
+
+[project.scripts]
+niri-genconfig = "companion.genconfig:main"
+niri-ipcext = "companion.ipcext:main"
+niri-workspaces = "companion.workspaces:main"
+
+[tool.setuptools]
+package-dir = { "" = "src" }
+
+[tool.setuptools.packages.find]
+where = ["src"]
