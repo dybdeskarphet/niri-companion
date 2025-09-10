@@ -25,7 +25,7 @@ class WorkspaceItemsSection(RootModel[dict[str, list[WorkspaceItem]]]):
 class WorkspaceConfigSection(BaseModel):
     items: WorkspaceItemsSection
     dmenu_command: str
-    delay_each_task: float
+    task_delay: float
 
 
 class AppConfig(BaseModel):
