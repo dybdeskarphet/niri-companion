@@ -1,6 +1,11 @@
 [project]
 name = "niri-companion"
 version = "2.0.0"
+license = "GPL-3.0-or-later"
+keywords = ["niri", "companion", "niri-companion", "wayland", "compositor"]
+maintainers = [
+  {name = "Ahmet Arda Kavakcı", email = "ahmetardakavakci@gmail.com"}
+]
 description = "Niri companion scripts"
 readme = "README.md"
 requires-python = ">=3.13"
@@ -13,6 +18,7 @@ dependencies = [
 Documentation = "https://github.com/dybdeskarphet/niri-companion"
 Issues = "https://github.com/dybdeskarphet/niri-companion/issues"
 Repository = "https://github.com/dybdeskarphet/niri-companion"
+Changelog = "https://github.com/dybdeskarphet/niri-companion/blob/main/CHANGELOG.md"
 
 [project.scripts]
 niri-genconfig = "companion.genconfig:main"
