@@ -9,27 +9,28 @@ class GenConfig:
     def __init__(self) -> None:
         self.config: AppConfig = load_config()
 
-    def gen_config(self):
-        all_files_found = True
+    def check_files(self):
+        non_existent_files: list[str] = []
 
+        for fname in self.config.genconfig.sources:
+            if not Path(fname).exists():
+                non_existent_files.append(fname)
+
+        if len(non_existent_files) != 0:
+            print("Couldn't find the files below, check your genconfig.sources:")
+            print(*non_existent_files, sep="\n")
+            exit(1)
+
+    def generate(self):
+        self.check_files()
         with open(self.config.general.output_path, "w", encoding="utf-8") as outfile:
             for fname in self.config.genconfig.sources:
-                if not Path(fname).exists():
-                    print(f"Source file missing: {fname}")
-                    all_files_found = False
-                    continue
                 with open(fname, "r", encoding="utf-8") as infile:
                     _ = outfile.write(infile.read())
                     _ = outfile.write("\n")
-
-        if all_files_found:
-            print(
-                f"Generation successful! Output written to: {self.config.general.output_path}"
-            )
-        else:
-            print(
-                f"Generation completed with missing files. Check logs above. Output written to: {self.config.general.output_path}"
-            )
+        print(
+            f"Generation successful! Output written to: {self.config.general.output_path}"
+        )
 
 
 def main():
@@ -40,7 +41,7 @@ def main():
     mode = argv[1]
 
     if mode == "generate":
-        GenConfig().gen_config()
+        GenConfig().generate()
     else:
         print("Unknown mode:", mode)
         exit(1)
