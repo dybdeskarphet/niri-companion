@@ -5,8 +5,10 @@ import time
 from typing import override
 from companion.config import AppConfig, load_config
 from watchdog.events import DirModifiedEvent, FileModifiedEvent, FileSystemEventHandler
+from companion.logger import Logger
 
 APP_NAME = "niri-genconfig"
+logger = Logger(f"[{APP_NAME}]")
 
 
 class FileChangeHandler(FileSystemEventHandler):
@@ -18,7 +20,7 @@ class FileChangeHandler(FileSystemEventHandler):
     def on_modified(self, event: DirModifiedEvent | FileModifiedEvent):
         if event.is_directory:
             return
-        print(f"{event.src_path} changed, regenerating...")
+        logger.print(f"{event.src_path} changed, regenerating...")
         if self.timer:
             self.timer.cancel()
         # NOTE: Modern editors don't do in-place editing, instead they
@@ -41,7 +43,7 @@ class GenConfig:
                 non_existent_files.append(fname)
 
         if len(non_existent_files) != 0:
-            print("Couldn't find the files below, check your genconfig.sources:")
+            logger.print("Couldn't find the files below, check your genconfig.sources:")
             print(*non_existent_files, sep="\n")
             exit(1)
 
@@ -51,7 +53,7 @@ class GenConfig:
                 with open(fname, "r", encoding="utf-8") as infile:
                     _ = outfile.write(infile.read())
                     _ = outfile.write("\n")
-        print(
+        logger.print(
             f"Generation successful! Output written to: {self.config.general.output_path}"
         )
 
@@ -63,19 +65,22 @@ class GenConfig:
         watch_dir = self.config.genconfig.watch_dir
         _ = observer.schedule(handler, watch_dir)
         observer.start()
-        print(f"Watching {watch_dir} for changes, press Ctrl+C to stop the daemon.")
+        logger.print(
+            f"Watching {watch_dir} for changes, press \033[31mCtrl+C\033[0m to stop the daemon."
+        )
 
         try:
             while True:
                 time.sleep(1)
         except KeyboardInterrupt:
+            print("Killing the daemon, goodbye!")
             observer.stop()
         observer.join()
 
 
 def main():
     if len(argv) < 2:
-        print(f"Usage: {APP_NAME} [generate|daemon]")
+        print(f"\033[32mUsage:\033[0m {APP_NAME} [generate|daemon]")
         return
 
     mode = argv[1]
@@ -89,7 +94,7 @@ def main():
         gen.check_files()
         gen.daemon()
     else:
-        print("Unknown mode:", mode)
+        print("\033[31mUnknown mode:\033[0m", mode)
         exit(1)
 
 

@@ -1,8 +1,10 @@
 from sys import argv
 from companion.genconfig import GenConfig
 from companion.config import AppConfig, load_config
+from companion.logger import Logger
 
 APP_NAME = "niri-ipcext"
+logger = Logger(f"[{APP_NAME}]")
 
 
 class IpcExt:
@@ -10,7 +12,7 @@ class IpcExt:
         self.config: AppConfig = load_config()
 
     def restore(self):
-        GenConfig().gen_config()
+        GenConfig().generate()
 
     def replace_line(self, old: str, new: str):
 
@@ -20,10 +22,10 @@ class IpcExt:
         matching_lines = [i for i, line in enumerate(lines) if old in line]
 
         if len(matching_lines) == 0:
-            print("No matching line found.")
+            logger.print("No matching line found.")
             return False
         elif len(matching_lines) > 1:
-            print("Error: More than one matching line found.")
+            logger.print("Error: More than one matching line found.")
             return False
 
         index = matching_lines[0]
@@ -37,7 +39,9 @@ class IpcExt:
 
 def main():
     if len(argv) < 2:
-        print(f"Usage: {APP_NAME} [replace|restore] <grep_text> <new_text>")
+        print(
+            f"\033[32mUsage:\033[0m {APP_NAME} [replace|restore] <grep_text> <new_text>"
+        )
         return
 
     mode = argv[1]
@@ -46,14 +50,14 @@ def main():
         old, new = argv[2], argv[3]
         res = IpcExt().replace_line(old, new)
         if res:
-            print("ok")
+            logger.print("Done!")
             exit(0)
     elif mode == "restore":
         res = IpcExt().restore()
-        print("ok")
+        logger.print("Done!")
         exit(0)
     else:
-        print("Unknown mode:", mode)
+        print("\033[31mUnknown mode:\033[0m", mode)
         exit(1)
 
 
