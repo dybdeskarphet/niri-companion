@@ -28,19 +28,23 @@ Check out the [example configuration file](./examples/settings.toml) for referen
 Generates a `config.kdl` by concatenating files from a specified directory.
 This lets you split your configuration into smaller, more manageable pieces.
 
+- `niri-genconfig generate`: Generates an output file (`general.output_path`) by conconcatenating sources (`genconfig.sources`)
+- `niri-genconfig daemon`: Same things as above, but auto-generates if files inside the watch directory (`genconfig.watch_dir`) have changed. Works as a daemon.
+
 ### `niri-ipcext`
 
 > [!WARNING]
 > `niri-ipcext` does not use a proper KDL parser/writer. Instead, it relies on a custom workaround described below, which can be brittle in some cases.
 
-Edits `config.kdl` by replacing `old_text` with `new_text`.
-To revert the changes, run `niri-genconfig generate`.
+- `niri-ipcext replace`: Edits `config.kdl` by replacing `old_text` with `new_text`.
+- `niri-ipcext restore`: Reverts the changes by running `niri-genconfig generate`.
+
 This provides IPC-like behavior, similar to Hyprland's IPC.
 
 ### `niri-workspaces`
 
-Lets you define workflows that automatically launch specific programs on specific workspaces.
-For example: open your browser on workspace 1 and your editor on workspace 2.
+- Lets you define workflows that automatically launch specific programs on specific workspaces. For example: open your browser on workspace 1 and your editor on workspace 2.
+- Needs **rofi** or any program that has a **dmenu functionality**
 
 ## Important Notes
 
