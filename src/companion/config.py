@@ -10,6 +10,7 @@ class GeneralConfig(BaseModel):
 
 class GenConfigSection(BaseModel):
     sources: list[str]
+    watch_dir: str
 
 
 class WorkspaceItem(BaseModel):
@@ -63,6 +64,14 @@ def load_config():
 
     for i, s in enumerate(config.genconfig.sources):
         config.genconfig.sources[i] = path.expanduser(path.expandvars(s))
+
+    config.genconfig.watch_dir = path.expanduser(
+        path.expandvars(config.genconfig.watch_dir)
+    )
+
+    if not Path(config.genconfig.watch_dir).exists():
+        print("Watch directory doesn't exist, check your genconfig.watch_dir:")
+        exit(1)
 
     config.general.output_path = path.expanduser(
         path.expandvars(str(config.general.output_path))

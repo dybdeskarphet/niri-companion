@@ -1,8 +1,32 @@
 from pathlib import Path
 from sys import argv
+import threading
+import time
+from typing import override
 from companion.config import AppConfig, load_config
+from watchdog.events import DirModifiedEvent, FileModifiedEvent, FileSystemEventHandler
 
 APP_NAME = "niri-genconfig"
+
+
+class FileChangeHandler(FileSystemEventHandler):
+    def __init__(self, gen_config: "GenConfig"):
+        self.gen_config: GenConfig = gen_config
+        self.timer = None
+
+    @override
+    def on_modified(self, event: DirModifiedEvent | FileModifiedEvent):
+        if event.is_directory:
+            return
+        print(f"{event.src_path} changed, regenerating...")
+        if self.timer:
+            self.timer.cancel()
+        # NOTE: Modern editors don't do in-place editing, instead they
+        # use a temp file and replace the old file with the new file. watchdog
+        # is really fast so this behaviour makes it think that file doesn't
+        # exist for a moment and throws errors. 0.4 enough even for older hardware.
+        self.timer = threading.Timer(0.4, self.gen_config.generate)
+        self.timer.start()
 
 
 class GenConfig:
@@ -22,7 +46,6 @@ class GenConfig:
             exit(1)
 
     def generate(self):
-        self.check_files()
         with open(self.config.general.output_path, "w", encoding="utf-8") as outfile:
             for fname in self.config.genconfig.sources:
                 with open(fname, "r", encoding="utf-8") as infile:
@@ -32,16 +55,39 @@ class GenConfig:
             f"Generation successful! Output written to: {self.config.general.output_path}"
         )
 
+    def daemon(self):
+        from watchdog.observers import Observer
+
+        observer = Observer()
+        handler = FileChangeHandler(self)
+        watch_dir = self.config.genconfig.watch_dir
+        _ = observer.schedule(handler, watch_dir)
+        observer.start()
+        print(f"Watching {watch_dir} for changes, press Ctrl+C to stop the daemon.")
+
+        try:
+            while True:
+                time.sleep(1)
+        except KeyboardInterrupt:
+            observer.stop()
+        observer.join()
+
 
 def main():
     if len(argv) < 2:
-        print(f"Usage: {APP_NAME} [generate]")
+        print(f"Usage: {APP_NAME} [generate|daemon]")
         return
 
     mode = argv[1]
 
     if mode == "generate":
-        GenConfig().generate()
+        gen = GenConfig()
+        gen.check_files()
+        gen.generate()
+    elif mode == "daemon":
+        gen = GenConfig()
+        gen.check_files()
+        gen.daemon()
     else:
         print("Unknown mode:", mode)
         exit(1)
