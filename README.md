@@ -13,11 +13,14 @@ pip install niri-companion
 
 ## Configuration
 
-The configuration file is located at, check out the [example configuration file](./examples/settings.toml):
+The configuration file is located at:
 
 ```
 ~/.config/niri-companion/settings.toml
+
 ```
+
+Check out the [example configuration file](./examples/settings.toml) for reference.
 
 ## Tools
 
