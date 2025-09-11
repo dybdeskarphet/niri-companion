@@ -9,7 +9,7 @@ class GeneralConfig(BaseModel):
 
 
 class GenConfigSection(BaseModel):
-    sources: list[Path]
+    sources: list[str]
 
 
 class WorkspaceItem(BaseModel):
@@ -62,7 +62,7 @@ def load_config():
         raise ValueError(f"Config validation error: {e}")
 
     for i, s in enumerate(config.genconfig.sources):
-        config.genconfig.sources[i] = Path(path.expanduser(path.expandvars(str(s))))
+        config.genconfig.sources[i] = path.expanduser(path.expandvars(s))
 
     config.general.output_path = path.expanduser(
         path.expandvars(str(config.general.output_path))
