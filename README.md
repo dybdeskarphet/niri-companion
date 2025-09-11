@@ -1,6 +1,8 @@
-# Niri Companion
+# 🫂 niri-companion
 
-**Niri Companion** is a toolkit that adds extra functionality to [niri](https://github.com/YaLTeR/niri).
+![PyPI - Downloads](https://img.shields.io/pypi/dd/niri-companion) ![PyPI - Version](https://img.shields.io/pypi/v/niri-companion)
+
+**niri-companion** is a toolkit that adds extra functionality to [niri](https://github.com/YaLTeR/niri).
 
 ## Installation
 
