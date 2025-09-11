@@ -2,6 +2,7 @@
 output_path = "~/.config/niri/config.kdl"
 
 [genconfig]
+watch_dir="$XDG_CONFIG_HOME/niri/src/"
 sources = [
   "$XDG_CONFIG_HOME/niri/src/internal.kdl",
   "$XDG_CONFIG_HOME/niri/src/monitors.kdl",
