@@ -31,7 +31,7 @@ This lets you split your configuration into smaller, more manageable pieces.
 ### `niri-ipcext`
 
 > [!WARNING]
-> `niri-ipcext` does not use a proper KDL parser/writer. Instead, it relies on a custom workaround described above, which can be brittle in some cases.
+> `niri-ipcext` does not use a proper KDL parser/writer. Instead, it relies on a custom workaround described below, which can be brittle in some cases.
 
 Edits `config.kdl` by replacing `old_text` with `new_text`.
 To revert the changes, run `niri-genconfig generate`.
