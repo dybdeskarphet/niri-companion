@@ -6,6 +6,7 @@ readme = "README.md"
 requires-python = ">=3.13"
 dependencies = [
   "pydantic>=2.11.7",
+  "watchdog>=6.0.0",
 ]
 
 [project.urls]
