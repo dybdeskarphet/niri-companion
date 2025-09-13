@@ -17,6 +17,7 @@ class ConfigPath:
     dir: Path
 
     def __init__(self, program: str) -> None:
+        logger = Logger("[niri-companion|config]")
         home = environ.get("HOME")
         xdg_config = environ.get("XDG_CONFIG_HOME")
 
@@ -26,7 +27,7 @@ class ConfigPath:
             else:
                 self.dir = Path(home) / ".config" / program
         else:
-            print("No home directory found.")
+            logger.error("No home directory found.")
             exit(1)
 
     def creat_dir(self):
