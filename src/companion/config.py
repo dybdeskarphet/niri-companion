@@ -2,6 +2,9 @@ from os import environ, path
 from pydantic import BaseModel, RootModel, ValidationError
 from pathlib import Path
 import tomllib
+from sys import exit
+
+from companion.utils import ConfigPath, Logger
 
 
 class GeneralConfig(BaseModel):
@@ -36,31 +39,41 @@ class AppConfig(BaseModel):
 
 
 def load_config():
-    home = environ.get("HOME")
-    xdg_config = environ.get("XDG_CONFIG_HOME")
 
-    if home:
-        if xdg_config:
-            niri_companion_config_dir = Path(xdg_config) / "niri-companion"
-        else:
-            niri_companion_config_dir = Path(home) / ".config" / "niri-companion"
-    else:
-        print("No home directory found.")
-        exit(1)
+    APP_NAME = "niri-companion|config"
+    logger = Logger(f"[{APP_NAME}]")
 
-    companion_settings_path = niri_companion_config_dir / "settings.toml"
-    niri_companion_config_dir.mkdir(parents=True, exist_ok=True)
+    companion_config = ConfigPath("niri-companion")
+    companion_config.creat_dir()
+    companion_settings_path = companion_config.dir / "settings.toml"
 
     try:
         with open(companion_settings_path, "rb") as f:
             raw = tomllib.load(f)
             config = AppConfig(**raw)
     except FileNotFoundError:
-        raise FileNotFoundError(f"Config file not found: {companion_settings_path}")
+        logger.error(f"Config file not found: {companion_settings_path}")
+        exit(1)
     except tomllib.TOMLDecodeError as e:
-        raise ValueError(f"Failed to parse TOML: {e}")
+        logger.error(f"Failed to parse TOML: {e}")
+        exit(1)
     except ValidationError as e:
-        raise ValueError(f"Config validation error: {e}")
+        from rich.console import Console
+        from rich.table import Table
+
+        console = Console()
+        table = Table()
+        table.add_column("Location", style="cyan")
+        table.add_column("Message", style="red")
+        table.add_column("Type", style="magenta")
+
+        for err in e.errors():
+            loc = " -> ".join(str(x) for x in err["loc"])
+            table.add_row(loc, err["msg"], err["type"])
+
+        logger.error(f"Invalid config file:")
+        console.print(table)
+        exit(1)
 
     for i, s in enumerate(config.genconfig.sources):
         config.genconfig.sources[i] = path.expanduser(path.expandvars(s))
@@ -70,7 +83,7 @@ def load_config():
     )
 
     if not Path(config.genconfig.watch_dir).exists():
-        print("Watch directory doesn't exist, check your genconfig.watch_dir:")
+        logger.error("Watch directory doesn't exist, check your genconfig.watch_dir:")
         exit(1)
 
     config.general.output_path = path.expanduser(
