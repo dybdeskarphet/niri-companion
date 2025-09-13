@@ -1,3 +1,32 @@
+## [2.1.0] - 2025-09-13
+
+### 🚀 Features
+
+- *(utils)* Add error logging to Logger utility
+- *(utils)* Copy config path generation logic to ConfigPath for future use
+- *(config)* Pretty print errors and use ConfigPath utility
+
+### 🐛 Bug Fixes
+
+- Use the utils path instead of logger path for other modules
+
+### 💼 Other
+
+- *(deps)* Add rich to dependencies
+
+### 📚 Documentation
+
+- *(CHANGELOG)* Update CHANGELOG
+- *(README)* Add more information about the usage
+- Add LICENSE and update pyproject.toml
+- *(README)* Add shields and stuff
+- *(README)* Add CHANGELOG notice
+
+### ⚙️ Miscellaneous Tasks
+
+- *(examples)* Update settings.toml
+- Rename logger as utils
+- Bump version
 ## [2.0.0] - 2025-09-11
 
 ### 🚀 Features
@@ -13,7 +42,7 @@
 
 ### 🚜 Refactor
 
-- *(config)* Use list\[str\] instead of list\[Path\] with sources
+- *(config)* Use list[str] instead of list[Path] with sources
 
 ### 📚 Documentation
 
