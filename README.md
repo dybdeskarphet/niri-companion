@@ -1,6 +1,6 @@
 # 🫂 niri-companion
 
-![PyPI - Downloads](https://img.shields.io/pypi/dd/niri-companion) ![PyPI - Version](https://img.shields.io/pypi/v/niri-companion) ![PyPI - License](https://img.shields.io/pypi/l/niri-companion)
+[![PyPI - Downloads](https://img.shields.io/pypi/dd/niri-companion)](https://pypi.org/project/niri-companion/) [![PyPI - Version](https://img.shields.io/pypi/v/niri-companion)](https://pypi.org/project/niri-companion/) [![PyPI - License](https://img.shields.io/pypi/l/niri-companion)](https://pypi.org/project/niri-companion/)
 
 **niri-companion** is a toolkit that adds extra functionality to [niri](https://github.com/YaLTeR/niri). See the [CHANGELOG](./CHANGELOG.md) for a detailed list of updates.
 
