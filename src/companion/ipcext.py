@@ -1,7 +1,7 @@
 from sys import argv
 from companion.genconfig import GenConfig
 from companion.config import AppConfig, load_config
-from companion.logger import Logger
+from companion.utils import Logger
 
 APP_NAME = "niri-ipcext"
 logger = Logger(f"[{APP_NAME}]")

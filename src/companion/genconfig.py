@@ -5,7 +5,7 @@ import time
 from typing import override
 from companion.config import AppConfig, load_config
 from watchdog.events import DirModifiedEvent, FileModifiedEvent, FileSystemEventHandler
-from companion.logger import Logger
+from companion.utils import Logger
 
 APP_NAME = "niri-genconfig"
 logger = Logger(f"[{APP_NAME}]")
@@ -73,7 +73,7 @@ class GenConfig:
             while True:
                 time.sleep(1)
         except KeyboardInterrupt:
-            print("Killing the daemon, goodbye!")
+            logger.print("Killing the daemon, goodbye!")
             observer.stop()
         observer.join()
 
