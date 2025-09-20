@@ -1,10 +1,10 @@
 [project]
 name = "niri-companion"
-version = "2.1.0"
+version = "2.2.0"
 license = "GPL-3.0-or-later"
 keywords = ["niri", "companion", "niri-companion", "wayland", "compositor"]
 maintainers = [
-  {name = "Ahmet Arda Kavakcı", email = "ahmetardakavakci@gmail.com"}
+  { name = "Ahmet Arda Kavakcı", email = "ahmetardakavakci@gmail.com" },
 ]
 description = "Niri companion scripts"
 readme = "README.md"
