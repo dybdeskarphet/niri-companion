@@ -12,6 +12,9 @@ class Logger:
     def error(self, msg: str) -> None:
         print(f"\033[31m{self.prefix}\033[0m {msg}")
 
+    def warn(self, msg: str) -> None:
+        print(f"\033[33m{self.prefix}\033[0m {msg}")
+
 
 class ConfigPath:
     dir: Path
