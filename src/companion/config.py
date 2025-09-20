@@ -1,11 +1,10 @@
-from os import path
 from pydantic import BaseModel, RootModel, ValidationError
 from pathlib import Path
 import tomllib
 from sys import exit
 import tomli_w
 
-from companion.utils import ConfigPath, Logger
+from companion.utils import ConfigPath, Logger, expandall
 
 
 class GeneralConfig(BaseModel):
@@ -112,22 +111,15 @@ def load_config():
         exit(1)
 
     for i, s in enumerate(config.genconfig.sources):
-        config.genconfig.sources[i] = path.expanduser(path.expandvars(s))
+        config.genconfig.sources[i] = expandall(s)
 
-    config.genconfig.watch_dir = path.expanduser(
-        path.expandvars(config.genconfig.watch_dir)
-    )
+    config.genconfig.watch_dir = expandall(config.genconfig.watch_dir)
 
     if not Path(config.genconfig.watch_dir).exists():
         logger.error("Watch directory doesn't exist, check your genconfig.watch_dir:")
         exit(1)
 
-    config.general.output_path = path.expanduser(
-        path.expandvars(str(config.general.output_path))
-    )
-
-    config.workspaces.dmenu_command = path.expandvars(
-        config.workspaces.dmenu_command
-    ).replace("~", str(Path.home()))
+    config.general.output_path = expandall(str(config.general.output_path))
+    config.workspaces.dmenu_command = expandall(config.workspaces.dmenu_command)
 
     return config
