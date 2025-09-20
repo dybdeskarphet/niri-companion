@@ -1,4 +1,4 @@
-from os import environ
+from os import environ, path
 from pathlib import Path
 
 
@@ -35,3 +35,10 @@ class ConfigPath:
 
     def creat_dir(self):
         self.dir.mkdir(parents=True, exist_ok=True)
+
+
+def expandall(p: str):
+    if p.startswith("~"):
+        return path.expanduser(path.expandvars(p))
+    else:
+        return path.expandvars(p).replace("~", str(Path.home()))
