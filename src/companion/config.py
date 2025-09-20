@@ -95,13 +95,10 @@ def load_config():
     except ValidationError as e:
         from rich.console import Console
         from rich.table import Table
+        from rich import box
 
         console = Console()
-        table = Table()
-        table.add_column("Location", style="cyan")
-        table.add_column("Message", style="red")
-        table.add_column("Type", style="magenta")
-
+        table = Table("Location", "Message", "Type", box=box.ROUNDED, min_width=80)
         for err in e.errors():
             loc = " -> ".join(str(x) for x in err["loc"])
             table.add_row(loc, err["msg"], err["type"])
