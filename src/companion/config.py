@@ -1,8 +1,9 @@
-from os import environ, path
+from os import path
 from pydantic import BaseModel, RootModel, ValidationError
 from pathlib import Path
 import tomllib
 from sys import exit
+import tomli_w
 
 from companion.utils import ConfigPath, Logger
 
@@ -38,6 +39,36 @@ class AppConfig(BaseModel):
     genconfig: GenConfigSection
 
 
+def create_empty_config(logger: Logger, path: Path):
+    empty_config = AppConfig(
+        general=GeneralConfig(output_path="~/.config/niri/probably_config.kdl"),
+        workspaces=WorkspaceConfigSection(
+            dmenu_command="rofi -dmenu",
+            task_delay=0.8,
+            items=WorkspaceItemsSection(
+                {"example": [WorkspaceItem(workspace=1, run="brave")]}
+            ),
+        ),
+        genconfig=GenConfigSection(
+            sources=[
+                "~/.config/niri/sources/first_config.kdl",
+                "~/.config/niri/sources/second_config.kdl",
+            ],
+            watch_dir="~/.config/niri/sources/",
+        ),
+    )
+
+    try:
+        with open(str(path), "wb") as f:
+            tomli_w.dump(empty_config.model_dump(), f)
+        logger.print("Config file created successfully!")
+        logger.warn(
+            "Please edit the configuration file, otherwise the niri-genconfig command may reset your existing niri configuration file."
+        )
+    except PermissionError:
+        logger.error("No permission to write this file :/")
+
+
 def load_config():
 
     APP_NAME = "niri-companion|config"
@@ -52,7 +83,12 @@ def load_config():
             raw = tomllib.load(f)
             config = AppConfig(**raw)
     except FileNotFoundError:
-        logger.error(f"Config file not found: {companion_settings_path}")
+        from rich.prompt import Confirm
+
+        logger.error(f"Config file not found at {companion_settings_path}")
+        ans = Confirm.ask("Do you want to create a new configuration file?")
+        if ans:
+            create_empty_config(logger, companion_settings_path)
         exit(1)
     except tomllib.TOMLDecodeError as e:
         logger.error(f"Failed to parse TOML: {e}")
