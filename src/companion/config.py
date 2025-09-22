@@ -89,7 +89,7 @@ def load_config():
     logger = Logger(f"[{APP_NAME}]")
 
     companion_config = ConfigPath("niri-companion")
-    companion_config.creat_dir()
+    companion_config.create_dir()
     companion_settings_path = companion_config.dir / "settings.toml"
 
     try:

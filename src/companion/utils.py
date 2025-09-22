@@ -33,7 +33,8 @@ class ConfigPath:
             logger.error("No home directory found.")
             exit(1)
 
-    def creat_dir(self):
+    # TODO: Typo, make it create_dir
+    def create_dir(self):
         self.dir.mkdir(parents=True, exist_ok=True)
 
 
