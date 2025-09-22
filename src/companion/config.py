@@ -7,12 +7,17 @@ import tomli_w
 from companion.utils import ConfigPath, Logger, expandall
 
 
+class ConfigItem(BaseModel):
+    group: str
+    path: str
+
+
 class GeneralConfig(BaseModel):
     output_path: str
 
 
 class GenConfigSection(BaseModel):
-    sources: list[str]
+    sources: list[str | list[ConfigItem]]
     watch_dir: str
 
 
@@ -52,6 +57,16 @@ def create_empty_config(logger: Logger, path: Path):
             sources=[
                 "~/.config/niri/sources/first_config.kdl",
                 "~/.config/niri/sources/second_config.kdl",
+                [
+                    ConfigItem(
+                        group="default",
+                        path="~/.config/niri/sources/default_visuals.kdl",
+                    ),
+                    ConfigItem(
+                        group="custom",
+                        path="~/.config/niri/sources/custom_visuals.kdl",
+                    ),
+                ],
             ],
             watch_dir="~/.config/niri/sources/",
         ),
@@ -108,7 +123,11 @@ def load_config():
         exit(1)
 
     for i, s in enumerate(config.genconfig.sources):
-        config.genconfig.sources[i] = expandall(s)
+        if isinstance(s, list):
+            for item in s:
+                item.path = expandall(item.path)
+        else:
+            config.genconfig.sources[i] = expandall(s)
 
     config.genconfig.watch_dir = expandall(config.genconfig.watch_dir)
 
@@ -116,7 +135,7 @@ def load_config():
         logger.error("Watch directory doesn't exist, check your genconfig.watch_dir:")
         exit(1)
 
-    config.general.output_path = expandall(str(config.general.output_path))
+    config.general.output_path = expandall(config.general.output_path)
     config.workspaces.dmenu_command = expandall(config.workspaces.dmenu_command)
 
     return config

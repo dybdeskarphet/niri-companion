@@ -6,6 +6,8 @@ from typing import override
 from companion.config import AppConfig, load_config
 from watchdog.events import DirModifiedEvent, FileModifiedEvent, FileSystemEventHandler
 from companion.utils import Logger
+import typer
+from typing_extensions import Annotated
 
 APP_NAME = "niri-genconfig"
 logger = Logger(f"[{APP_NAME}]")
@@ -38,21 +40,36 @@ class GenConfig:
     def check_files(self):
         non_existent_files: list[str] = []
 
-        for fname in self.config.genconfig.sources:
-            if not Path(fname).exists():
-                non_existent_files.append(fname)
+        for source in self.config.genconfig.sources:
+            if isinstance(source, str):
+                if not Path(source).exists():
+                    non_existent_files.append(source)
+            else:
+                for source_array_item in source:
+                    if not Path(source_array_item.path).exists():
+                        non_existent_files.append(source_array_item.path)
 
         if len(non_existent_files) != 0:
             logger.print("Couldn't find the files below, check your genconfig.sources:")
             print(*non_existent_files, sep="\n")
             exit(1)
 
-    def generate(self):
+    def generate(self, mode: str = "default"):
         with open(self.config.general.output_path, "w", encoding="utf-8") as outfile:
-            for fname in self.config.genconfig.sources:
-                with open(fname, "r", encoding="utf-8") as infile:
-                    _ = outfile.write(infile.read())
-                    _ = outfile.write("\n")
+            for source in self.config.genconfig.sources:
+                if isinstance(source, str):
+                    with open(source, "r", encoding="utf-8") as infile:
+                        _ = outfile.write(infile.read())
+                        _ = outfile.write("\n")
+                else:
+                    for source_array_item in source:
+                        if source_array_item.group == mode:
+                            with open(
+                                source_array_item.path, "r", encoding="utf-8"
+                            ) as infile:
+                                _ = outfile.write(infile.read())
+                                _ = outfile.write("\n")
+
         logger.print(
             f"Generation successful! Output written to: {self.config.general.output_path}"
         )
@@ -78,25 +95,25 @@ class GenConfig:
         observer.join()
 
 
-def main():
-    if len(argv) < 2:
-        print(f"\033[32mUsage:\033[0m {APP_NAME} [generate|daemon]")
-        return
+app = typer.Typer(
+    help="niri-companion config generation tool",
+    context_settings={"help_option_names": ["-h", "--help"]},
+)
 
-    mode = argv[1]
 
-    if mode == "generate":
-        gen = GenConfig()
-        gen.check_files()
-        gen.generate()
-    elif mode == "daemon":
-        gen = GenConfig()
-        gen.check_files()
-        gen.daemon()
-    else:
-        print("\033[31mUnknown mode:\033[0m", mode)
-        exit(1)
+@app.command(help="Generate configuration")
+def generate(group: Annotated[str, typer.Argument()] = "default"):
+    gen = GenConfig()
+    gen.check_files()
+    gen.generate(group)
+
+
+@app.command(help="Start config generation daemon")
+def dameon():
+    gen = GenConfig()
+    gen.check_files()
+    gen.daemon()
 
 
 if __name__ == "__main__":
-    main()
+    app()
