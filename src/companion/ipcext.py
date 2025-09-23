@@ -1,65 +1,64 @@
-from sys import argv
+import sys
+from typing import Annotated
+import typer
+from companion.config import config, load_config
 from companion.genconfig import GenConfig
-from companion.config import AppConfig, load_config
-from companion.utils import Logger
-
-APP_NAME = "niri-ipcext"
-logger = Logger(f"[{APP_NAME}]")
+from companion.models.config import AppConfig
+from companion.utils import logger
+from companion.utils.logger import console, log
 
 
 class IpcExt:
     def __init__(self) -> None:
-        self.config: AppConfig = load_config()
+        pass
 
     def restore(self):
         GenConfig().generate()
 
     def replace_line(self, old: str, new: str):
-
-        with open(self.config.general.output_path, "r") as f:
+        with open(config.general.output_path, "r") as f:
             lines = f.readlines()
 
         matching_lines = [i for i, line in enumerate(lines) if old in line]
 
         if len(matching_lines) == 0:
-            logger.print("No matching line found.")
+            console.print("No matching line found.")
             return False
         elif len(matching_lines) > 1:
-            logger.print("Error: More than one matching line found.")
+            console.print("Error: More than one matching line found.")
             return False
 
         index = matching_lines[0]
         lines[index] = new + "\n"
 
-        with open(self.config.general.output_path, "w") as f:
+        with open(config.general.output_path, "w") as f:
             f.writelines(lines)
 
         return True
 
 
-def main():
-    if len(argv) < 2:
-        print(
-            f"\033[32mUsage:\033[0m {APP_NAME} [replace|restore] <grep_text> <new_text>"
-        )
-        return
+app = typer.Typer(
+    help="niri-companion config generation tool",
+    context_settings={"help_option_names": ["-h", "--help"]},
+)
 
-    mode = argv[1]
 
-    if mode == "replace":
-        old, new = argv[2], argv[3]
-        res = IpcExt().replace_line(old, new)
-        if res:
-            logger.print("Done!")
-            exit(0)
-    elif mode == "restore":
-        res = IpcExt().restore()
-        logger.print("Done!")
+@app.command(help="Replace string inside niri configuration file")
+def replace(
+    old: Annotated[str, typer.Argument()], new: Annotated[str, typer.Argument()]
+):
+    res = IpcExt().replace_line(old, new)
+    if res:
+        log("Done!")
         exit(0)
-    else:
-        print("\033[31mUnknown mode:\033[0m", mode)
-        exit(1)
+
+
+@app.command(help="Restore default settings")
+def restore():
+    res = IpcExt().restore()
+    log("Done!")
+    exit(0)
 
 
 if __name__ == "__main__":
-    main()
+    app()

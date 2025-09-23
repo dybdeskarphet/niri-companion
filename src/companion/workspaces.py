@@ -1,10 +1,10 @@
 import subprocess
 import time
-from companion.config import load_config
+from companion.config import config
+from companion.utils.logger import error, log
 
 
 def main():
-    config = load_config()
     workspace_strings = list(config.workspaces.items.root.keys())
     menu = "\n".join(workspace_strings)
 
@@ -18,7 +18,10 @@ def main():
         )
         choice = result.stdout.strip()
         if choice:
-            print("You picked:", choice)
+            log(f"You picked: {choice}")
+        else:
+            error(f"You didn't pick anything")
+            exit(1)
     except Exception as e:
         print("Error:", e)
         exit(1)

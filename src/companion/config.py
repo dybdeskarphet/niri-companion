@@ -1,49 +1,42 @@
-from pydantic import BaseModel, RootModel, ValidationError
+from os import environ
 from pathlib import Path
 import tomllib
-from sys import exit
+from companion.models.config import (
+    AppConfig,
+    ConfigItem,
+    GenConfigSection,
+    GeneralConfig,
+    WorkspaceConfigSection,
+    WorkspaceItem,
+    WorkspaceItemsSection,
+)
+from companion.utils.general import expandall
 import tomli_w
-
-from companion.utils import ConfigPath, Logger, expandall
-
-
-class ConfigItem(BaseModel):
-    group: str
-    path: str
+from pydantic import ValidationError
+from companion.utils.logger import console, error, log, warn
 
 
-class GeneralConfig(BaseModel):
-    output_path: str
+class ConfigPath:
+    dir: Path
+
+    def __init__(self, program: str) -> None:
+        home = environ.get("HOME")
+        xdg_config = environ.get("XDG_CONFIG_HOME")
+
+        if home:
+            if xdg_config:
+                self.dir = Path(xdg_config) / program
+            else:
+                self.dir = Path(home) / ".config" / program
+        else:
+            error("No home directory found.")
+
+    # TODO: Typo, make it create_dir
+    def create_dir(self):
+        self.dir.mkdir(parents=True, exist_ok=True)
 
 
-class GenConfigSection(BaseModel):
-    sources: list[str | list[ConfigItem]]
-    watch_dir: str
-
-
-class WorkspaceItem(BaseModel):
-    workspace: int
-    run: str
-
-
-class WorkspaceItemsSection(RootModel[dict[str, list[WorkspaceItem]]]):
-    def __getitem__(self, item: str) -> list[WorkspaceItem]:
-        return self.root[item]
-
-
-class WorkspaceConfigSection(BaseModel):
-    items: WorkspaceItemsSection
-    dmenu_command: str
-    task_delay: float
-
-
-class AppConfig(BaseModel):
-    workspaces: WorkspaceConfigSection
-    general: GeneralConfig
-    genconfig: GenConfigSection
-
-
-def create_empty_config(logger: Logger, path: Path):
+def create_empty_config(path: Path):
     empty_config = AppConfig(
         general=GeneralConfig(output_path="~/.config/niri/probably_config.kdl"),
         workspaces=WorkspaceConfigSection(
@@ -75,19 +68,15 @@ def create_empty_config(logger: Logger, path: Path):
     try:
         with open(str(path), "wb") as f:
             tomli_w.dump(empty_config.model_dump(), f)
-        logger.print("Config file created successfully!")
-        logger.warn(
-            "Please edit the configuration file, otherwise the niri-genconfig command may reset your existing niri configuration file."
+        log("Config file created successfully!")
+        warn(
+            "Please edit the configuration file. Default configurations serve as placeholders."
         )
     except PermissionError:
-        logger.error("No permission to write this file :/")
+        error("No permission to write this file :/")
 
 
 def load_config():
-
-    APP_NAME = "niri-companion|config"
-    logger = Logger(f"[{APP_NAME}]")
-
     companion_config = ConfigPath("niri-companion")
     companion_config.create_dir()
     companion_settings_path = companion_config.dir / "settings.toml"
@@ -99,26 +88,24 @@ def load_config():
     except FileNotFoundError:
         from rich.prompt import Confirm
 
-        logger.error(f"Config file not found at {companion_settings_path}")
+        error(f"Config file not found at {companion_settings_path}")
         ans = Confirm.ask("Do you want to create a new configuration file?")
         if ans:
-            create_empty_config(logger, companion_settings_path)
+            create_empty_config(companion_settings_path)
         exit(1)
     except tomllib.TOMLDecodeError as e:
-        logger.error(f"Failed to parse TOML: {e}")
+        error(f"Failed to parse TOML: {e}")
         exit(1)
     except ValidationError as e:
-        from rich.console import Console
         from rich.table import Table
         from rich import box
 
-        console = Console()
         table = Table("Location", "Message", "Type", box=box.ROUNDED, min_width=80)
         for err in e.errors():
             loc = " -> ".join(str(x) for x in err["loc"])
             table.add_row(loc, err["msg"], err["type"])
 
-        logger.error(f"Invalid config file:")
+        error(f"Invalid config file:")
         console.print(table)
         exit(1)
 
@@ -132,10 +119,13 @@ def load_config():
     config.genconfig.watch_dir = expandall(config.genconfig.watch_dir)
 
     if not Path(config.genconfig.watch_dir).exists():
-        logger.error("Watch directory doesn't exist, check your genconfig.watch_dir:")
+        error("Watch directory doesn't exist, check your genconfig.watch_dir:")
         exit(1)
 
     config.general.output_path = expandall(config.general.output_path)
     config.workspaces.dmenu_command = expandall(config.workspaces.dmenu_command)
 
     return config
+
+
+config = load_config()

@@ -1,16 +1,12 @@
 from pathlib import Path
-from sys import argv
 import threading
 import time
-from typing import override
-from companion.config import AppConfig, load_config
-from watchdog.events import DirModifiedEvent, FileModifiedEvent, FileSystemEventHandler
-from companion.utils import Logger
+from typing import Annotated, override
 import typer
-from typing_extensions import Annotated
-
-APP_NAME = "niri-genconfig"
-logger = Logger(f"[{APP_NAME}]")
+from watchdog.events import DirModifiedEvent, FileModifiedEvent, FileSystemEventHandler
+from companion.config import config
+from companion.utils.genconfig import return_source
+from companion.utils.logger import log, warn
 
 
 class FileChangeHandler(FileSystemEventHandler):
@@ -22,7 +18,7 @@ class FileChangeHandler(FileSystemEventHandler):
     def on_modified(self, event: DirModifiedEvent | FileModifiedEvent):
         if event.is_directory:
             return
-        logger.print(f"{event.src_path} changed, regenerating...")
+        log(f"{event.src_path} changed, regenerating...")
         if self.timer:
             self.timer.cancel()
         # NOTE: Modern editors don't do in-place editing, instead they
@@ -34,63 +30,51 @@ class FileChangeHandler(FileSystemEventHandler):
 
 
 class GenConfig:
-    def __init__(self) -> None:
-        self.config: AppConfig = load_config()
+    def __init__(self, group: str = "default") -> None:
+        self.group: str = group
 
     def check_files(self):
         non_existent_files: list[str] = []
 
-        for source in self.config.genconfig.sources:
-            if isinstance(source, str):
-                if not Path(source).exists():
-                    non_existent_files.append(source)
-            else:
-                for source_array_item in source:
-                    if not Path(source_array_item.path).exists():
-                        non_existent_files.append(source_array_item.path)
+        for source in config.genconfig.sources:
+            parsed_source_path = return_source(source, self.group)
+            if not Path(parsed_source_path).exists():
+                non_existent_files.append(parsed_source_path)
 
         if len(non_existent_files) != 0:
-            logger.print("Couldn't find the files below, check your genconfig.sources:")
+            warn("Couldn't find the files below, check your genconfig.sources:")
             print(*non_existent_files, sep="\n")
             exit(1)
 
-    def generate(self, mode: str = "default"):
-        with open(self.config.general.output_path, "w", encoding="utf-8") as outfile:
-            for source in self.config.genconfig.sources:
-                if isinstance(source, str):
-                    with open(source, "r", encoding="utf-8") as infile:
-                        _ = outfile.write(infile.read())
-                        _ = outfile.write("\n")
-                else:
-                    for source_array_item in source:
-                        if source_array_item.group == mode:
-                            with open(
-                                source_array_item.path, "r", encoding="utf-8"
-                            ) as infile:
-                                _ = outfile.write(infile.read())
-                                _ = outfile.write("\n")
+    def generate(self):
+        with open(config.general.output_path, "w", encoding="utf-8") as outfile:
+            for source in config.genconfig.sources:
+                parsed_source_path = return_source(
+                    source,
+                    self.group,
+                )
+                with open(parsed_source_path, "r", encoding="utf-8") as infile:
+                    _ = outfile.write(infile.read())
+                    _ = outfile.write("\n")
 
-        logger.print(
-            f"Generation successful! Output written to: {self.config.general.output_path}"
-        )
+        log(f"Generation successful! Output written to: {config.general.output_path}")
 
     def daemon(self):
         from watchdog.observers import Observer
 
         observer = Observer()
         handler = FileChangeHandler(self)
-        watch_dir = self.config.genconfig.watch_dir
-        _ = observer.schedule(handler, watch_dir)
+        _ = observer.schedule(handler, config.genconfig.watch_dir)
         observer.start()
-        logger.print(
-            f"Watching {watch_dir} for changes, press \033[31mCtrl+C\033[0m to stop the daemon."
+        log(
+            f"Watching {config.genconfig.watch_dir} for changes, press [yellow]Ctrl+C[/yellow] to stop the daemon."
         )
 
         try:
             while True:
                 time.sleep(1)
         except KeyboardInterrupt:
-            logger.print("Killing the daemon, goodbye!")
+            log("Killing the daemon, goodbye!")
             observer.stop()
         observer.join()
 
@@ -103,13 +87,13 @@ app = typer.Typer(
 
 @app.command(help="Generate configuration")
 def generate(group: Annotated[str, typer.Argument()] = "default"):
-    gen = GenConfig()
+    gen = GenConfig(group)
     gen.check_files()
-    gen.generate(group)
+    gen.generate()
 
 
 @app.command(help="Start config generation daemon")
-def dameon():
+def daemon():
     gen = GenConfig()
     gen.check_files()
     gen.daemon()
