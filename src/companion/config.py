@@ -36,6 +36,11 @@ class ConfigPath:
         self.dir.mkdir(parents=True, exist_ok=True)
 
 
+companion_config = ConfigPath("niri-companion")
+companion_config.create_dir()
+COMPANION_SETTINGS_PATH = companion_config.dir / "settings.toml"
+
+
 def create_empty_config(path: Path):
     empty_config = AppConfig(
         general=GeneralConfig(output_path="~/.config/niri/probably_config.kdl"),
@@ -76,39 +81,24 @@ def create_empty_config(path: Path):
         error("No permission to write this file :/")
 
 
-def load_config():
-    companion_config = ConfigPath("niri-companion")
-    companion_config.create_dir()
-    companion_settings_path = companion_config.dir / "settings.toml"
-
+def read_config_file():
     try:
-        with open(companion_settings_path, "rb") as f:
-            raw = tomllib.load(f)
-            config = AppConfig(**raw)
+        with open(COMPANION_SETTINGS_PATH, "rb") as f:
+            return tomllib.load(f)
     except FileNotFoundError:
         from rich.prompt import Confirm
 
-        error(f"Config file not found at {companion_settings_path}")
+        error(f"Config file not found at {COMPANION_SETTINGS_PATH}")
         ans = Confirm.ask("Do you want to create a new configuration file?")
         if ans:
-            create_empty_config(companion_settings_path)
+            create_empty_config(COMPANION_SETTINGS_PATH)
         exit(1)
     except tomllib.TOMLDecodeError as e:
         error(f"Failed to parse TOML: {e}")
         exit(1)
-    except ValidationError as e:
-        from rich.table import Table
-        from rich import box
 
-        table = Table("Location", "Message", "Type", box=box.ROUNDED, min_width=80)
-        for err in e.errors():
-            loc = " -> ".join(str(x) for x in err["loc"])
-            table.add_row(loc, err["msg"], err["type"])
 
-        error(f"Invalid config file:")
-        console.print(table)
-        exit(1)
-
+def expand_config(config: AppConfig):
     for i, s in enumerate(config.genconfig.sources):
         if isinstance(s, list):
             for item in s:
@@ -124,6 +114,27 @@ def load_config():
 
     config.general.output_path = expandall(config.general.output_path)
     config.workspaces.dmenu_command = expandall(config.workspaces.dmenu_command)
+
+
+def load_config():
+    try:
+        with open(COMPANION_SETTINGS_PATH, "rb") as f:
+            raw = read_config_file()
+            config = AppConfig(**raw)
+    except ValidationError as e:
+        from rich.table import Table
+        from rich import box
+
+        table = Table("Location", "Message", "Type", box=box.ROUNDED, min_width=80)
+        for err in e.errors():
+            loc = " -> ".join(str(x) for x in err["loc"])
+            table.add_row(loc, err["msg"], err["type"])
+
+        error(f"Invalid config file:")
+        console.print(table)
+        exit(1)
+
+    expand_config(config)
 
     return config
 
