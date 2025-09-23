@@ -6,11 +6,12 @@
 
 ## Installation
 
-Install with `pipx` or `pip` accordingly:
+Install with `pipx`, `pip` or `uv` accordingly:
 
 ```
 pipx install niri-companion
 pip install niri-companion
+uv tool install niri-companion
 ```
 
 ## Configuration
