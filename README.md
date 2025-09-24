@@ -1,12 +1,28 @@
-<p align="center">
-<b>🫂 niri-companion</b>
+<div style="text-align:center">
+  <strong>🫂 niri-companion</strong>
+  <p>
+    niri-companion is a toolkit that adds extra functionality to
+    <a href="https://github.com/YaLTeR/niri">niri</a>
+  </p>
 
-niri-companion is a toolkit that adds extra functionality to [niri](https://github.com/YaLTeR/niri)
+  <p>
+    <a href="https://pypi.org/project/niri-companion/">
+      <img src="https://img.shields.io/pepy/dt/niri-companion" alt="Pepy Total Downloads" />
+    </a>
+    <a href="https://pypi.org/project/niri-companion/">
+      <img src="https://img.shields.io/pypi/v/niri-companion" alt="PyPI - Version" />
+    </a>
+    <a href="https://pypi.org/project/niri-companion/">
+      <img src="https://img.shields.io/pypi/l/niri-companion" alt="PyPI - License" />
+    </a>
+  </p>
 
-[![Pepy Total Downloads](https://img.shields.io/pepy/dt/niri-companion)](https://pypi.org/project/niri-companion/) [![PyPI - Version](https://img.shields.io/pypi/v/niri-companion)](https://pypi.org/project/niri-companion/) [![PyPI - License](https://img.shields.io/pypi/l/niri-companion)](https://pypi.org/project/niri-companion/)
-
-**[Wiki](https://github.com/dybdeskarphet/niri-companion/wiki)** &bull; **[Chnagelog](./CHANGELOG.md)**
-</p>
+  <p>
+    <strong><a href="https://github.com/dybdeskarphet/niri-companion/wiki">Wiki</a></strong>
+    &bull;
+    <strong><a href="./CHANGELOG.md">Chnagelog</a></strong>
+  </p>
+</div>
 
 ## Installation
 
