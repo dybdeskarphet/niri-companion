@@ -17,6 +17,8 @@
 ### 📚 Documentation
 
 - *(README)* Add uv tool as an installation method
+- *(changelog)* Update CHANGELOG
+- *(wiki)* Test wiki github action
 
 ### 🧪 Testing
 
