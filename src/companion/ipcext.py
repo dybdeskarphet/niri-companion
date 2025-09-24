@@ -35,7 +35,7 @@ class IpcExt:
 
 
 app = typer.Typer(
-    help="niri-companion config generation tool",
+    help="niri-companion IPC-like configuration tool",
     context_settings={"help_option_names": ["-h", "--help"]},
 )
 
