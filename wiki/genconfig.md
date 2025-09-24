@@ -1,3 +1,5 @@
+# Configuration
+
 The configuration file is located at:
 
 ```
