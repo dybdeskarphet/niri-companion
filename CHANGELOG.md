@@ -1,8 +1,68 @@
+## [unreleased]
+
+### 🚀 Features
+
+- *(genconfig)* Add config groups feature
+- *(genconfig)* Add group selection option to genconfig daemon mode
+
+### 💼 Other
+
+- *(deps)* Add Typer
+
+### 🚜 Refactor
+
+- Overall modularization of the project and better CLI arg handling/logging
+- *(config)* Split load_config to multiple methods
+
+### 📚 Documentation
+
+- *(README)* Add uv tool as an installation method
+
+### 🧪 Testing
+
+- *(utils)* Add tests for utils
+
+### ⚙️ Miscellaneous Tasks
+
+- *(ci)* Add gitcliff action
+- *(ci)* Rename .workflows to workflows
+- *(ci)* Add missing sections to git-cliff action
+- *(utils)* Rename creat_dir with create_dir
+- *(wiki)* Add github-wiki-action
+## [2.2.0] - 2025-09-20
+
+### 🚀 Features
+
+- *(utils)* Use colorful logging for home not found error
+- *(utils)* Add warn to logger
+- *(utils)* Create expandall for quickly expanding env variables and tilde
+- *(config)* Prompt for an default niri-companion config if no config is found
+- *(config)* Change invalid config error table style
+
+### 💼 Other
+
+- *(deps)* Add tomli-w
+- *(release)* Bump version to 2.2.0
+
+### 🚜 Refactor
+
+- *(config)* Use the expandall util
+
+### 📚 Documentation
+
+- *(CHANGELOG)* V2.1.0
+- *(README)* Add LICENSE badge
+- *(README)* Add pypi link to badges
+- *(README)* Use total downloads instead of daily downloads
+
+### ⚙️ Miscellaneous Tasks
+
+- *(precommit)* Add conventional commit messages pre-commit hook
 ## [2.1.0] - 2025-09-13
 
 ### 🚀 Features
 
-- *(utils)* Add error logging to Logger utility
+- *(utils)* Add error loggin to Logger utility
 - *(utils)* Copy config path generation logic to ConfigPath for future use
 - *(config)* Pretty print errors and use ConfigPath utility
 
