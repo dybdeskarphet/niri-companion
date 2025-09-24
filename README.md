@@ -22,7 +22,7 @@
 <p align="center">
   <strong><a href="https://github.com/dybdeskarphet/niri-companion/wiki">Wiki</a></strong>
   &bull;
-  <strong><a href="./CHANGELOG.md">Chnagelog</a></strong>
+  <strong><a href="./CHANGELOG.md">Changelog</a></strong>
 </p>
 
 ## Installation
