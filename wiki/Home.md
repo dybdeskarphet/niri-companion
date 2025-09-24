@@ -1,3 +1,3 @@
-# niri-companion
+Welcome to the niri-companion documentation!
 
-Test
+Feel free to look through other wiki pages for usage.
