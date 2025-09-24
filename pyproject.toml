@@ -24,8 +24,8 @@ Repository = "https://github.com/dybdeskarphet/niri-companion"
 Changelog = "https://github.com/dybdeskarphet/niri-companion/blob/main/CHANGELOG.md"
 
 [project.scripts]
-niri-genconfig = "companion.genconfig:main"
-niri-ipcext = "companion.ipcext:main"
+niri-genconfig = "companion.genconfig:app"
+niri-ipcext = "companion.ipcext:app"
 niri-workspaces = "companion.workspaces:main"
 
 [tool.setuptools]
