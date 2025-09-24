@@ -23,7 +23,11 @@ Workspaces are defined under `[workspaces.items]`. Example:
 ]
 ```
 
-This example will:
+Your rofi menu will look like this:
+
+<img src="./assets/workspaces_rofi.png" height=150/>
+
+And when you select the `leetcoding` workspace.
 
 1. Open a `fish` terminal running `nvim` in workspace 1.
 2. Make the terminal window full screen.
