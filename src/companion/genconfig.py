@@ -93,8 +93,8 @@ def generate(group: Annotated[str, typer.Argument()] = "default"):
 
 
 @app.command(help="Start config generation daemon")
-def daemon():
-    gen = GenConfig()
+def daemon(group: Annotated[str, typer.Argument()] = "default"):
+    gen = GenConfig(group)
     gen.check_files()
     gen.daemon()
 
