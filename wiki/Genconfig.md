@@ -1,5 +1,3 @@
-# Niri Companion Configuration
-
 The configuration file is located at:
 
 ```
@@ -73,8 +71,7 @@ sources = [
 ]
 ```
 
-* Only the files from the selected group (plus any standalone string items) are included when generating the config.
-* Example:
+Only the files from the selected group (plus any standalone string items) are included when generating the config. For example:
 
 ```
 niri-genconfig generate cool
