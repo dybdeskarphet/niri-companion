@@ -1,6 +1,6 @@
 [project]
 name = "niri-companion"
-version = "2.2.0"
+version = "2.3.0"
 license = "GPL-3.0-or-later"
 keywords = ["niri", "companion", "niri-companion", "wayland", "compositor"]
 maintainers = [
@@ -35,7 +35,4 @@ package-dir = { "" = "src" }
 where = ["src"]
 
 [dependency-groups]
-dev = [
-    "pytest>=8.4.2",
-    "pytest-cov>=7.0.0",
-]
+dev = ["pytest>=8.4.2", "pytest-cov>=7.0.0"]
