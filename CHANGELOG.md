@@ -19,6 +19,8 @@
 - *(README)* Add uv tool as an installation method
 - *(changelog)* Update CHANGELOG
 - *(wiki)* Test wiki github action
+- *(changelog)* Update CHANGELOG
+- *(wiki)* Add Genconfig page
 
 ### 🧪 Testing
 
