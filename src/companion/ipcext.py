@@ -1,10 +1,7 @@
-import sys
 from typing import Annotated
 import typer
-from companion.config import config, load_config
+from companion.config import config
 from companion.genconfig import GenConfig
-from companion.models.config import AppConfig
-from companion.utils import logger
 from companion.utils.logger import console, log
 
 
