@@ -1,9 +1,14 @@
-## [unreleased]
+## [2.3.0] - 2025-09-24
 
 ### 🚀 Features
 
 - *(genconfig)* Add config groups feature
 - *(genconfig)* Add group selection option to genconfig daemon mode
+
+### 🐛 Bug Fixes
+
+- *(ipcext)* Write a description suitable for ipcext
+- *(pyproject)* Use the appropriate method to call scripts that use Typer
 
 ### 💼 Other
 
@@ -13,14 +18,6 @@
 
 - Overall modularization of the project and better CLI arg handling/logging
 - *(config)* Split load_config to multiple methods
-
-### 📚 Documentation
-
-- *(README)* Add uv tool as an installation method
-- *(changelog)* Update CHANGELOG
-- *(wiki)* Test wiki github action
-- *(changelog)* Update CHANGELOG
-- *(wiki)* Add Genconfig page
 
 ### 🧪 Testing
 
@@ -33,6 +30,9 @@
 - *(ci)* Add missing sections to git-cliff action
 - *(utils)* Rename creat_dir with create_dir
 - *(wiki)* Add github-wiki-action
+- *(cliff)* Ignore docs tag for CHANGELOG generation
+- *(ipcext)* Remove unnecessary import
+- *(release)* Bump version
 ## [2.2.0] - 2025-09-20
 
 ### 🚀 Features
@@ -52,13 +52,6 @@
 
 - *(config)* Use the expandall util
 
-### 📚 Documentation
-
-- *(CHANGELOG)* V2.1.0
-- *(README)* Add LICENSE badge
-- *(README)* Add pypi link to badges
-- *(README)* Use total downloads instead of daily downloads
-
 ### ⚙️ Miscellaneous Tasks
 
 - *(precommit)* Add conventional commit messages pre-commit hook
@@ -77,14 +70,6 @@
 ### 💼 Other
 
 - *(deps)* Add rich to dependencies
-
-### 📚 Documentation
-
-- *(CHANGELOG)* Update CHANGELOG
-- *(README)* Add more information about the usage
-- Add LICENSE and update pyproject.toml
-- *(README)* Add shields and stuff
-- *(README)* Add CHANGELOG notice
 
 ### ⚙️ Miscellaneous Tasks
 
@@ -107,13 +92,6 @@
 ### 🚜 Refactor
 
 - *(config)* Use list[str] instead of list[Path] with sources
-
-### 📚 Documentation
-
-- Update CHANGELOG
-- *(README)* Correct the grammatical errors
-- *(README)* Delete the extra new line
-- *(README)* Improve grammar
 
 ### ⚙️ Miscellaneous Tasks
 
