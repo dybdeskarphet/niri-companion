@@ -25,6 +25,12 @@
   <strong><a href="./CHANGELOG.md">Changelog</a></strong>
 </p>
 
+## Overview
+
+- `niri-genconfig` – allows using multiple KDL configuration files instead of a single `config.kdl`.
+- `niri-workspaces` – creates sessions for different tasks.
+- `niri-ipcext` – performs IPC-like modifications.
+
 ## Installation
 
 Install with `pipx`, `pip` or `uv` accordingly:
