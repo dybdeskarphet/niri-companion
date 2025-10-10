@@ -38,7 +38,15 @@ in
       pypkgs.watchdog
     ];
 
-    # Keep it minimal: skip running tests/import checks to avoid
-    # importing modules that expect user config at build time.
+    # Run tests with pytest
+    nativeCheckInputs = [pypkgs.pytestCheckHook];
     doCheck = false;
+
+    # Optional: only import safe submodules during import checks
+    # to avoid triggering config load at import time.
+    pythonImportsCheck = [
+      "companion.utils.general"
+      "companion.utils.genconfig"
+      "companion.models.config"
+    ];
   }
