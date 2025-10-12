@@ -1,3 +1,12 @@
+## [unreleased]
+
+### 🚀 Features
+
+- *(nix)* Add default and shell Nix configurations for niri-companion
+
+### 🐛 Bug Fixes
+
+- *(nix)* Update test configuration to run pytest and limit imports during checks
 ## [2.3.0] - 2025-09-24
 
 ### 🚀 Features
