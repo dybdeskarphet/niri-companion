@@ -29,11 +29,15 @@ def main():
     for item in config.workspaces.items.root[choice]:
         ws = item.workspace
         command = item.run
+        task_delay = item.task_delay
 
         _ = subprocess.run(f"niri msg action focus-workspace {str(ws)}", shell=True)
         time.sleep(config.workspaces.task_delay)
         _ = subprocess.run(f"niri msg action spawn-sh -- '{command}'", shell=True)
-        time.sleep(config.workspaces.task_delay)
+        if task_delay is not None:
+            time.sleep(task_delay)
+        else:
+            time.sleep(config.workspaces.task_delay)
         _ = subprocess.run(f"niri msg action maximize-column", shell=True)
         time.sleep(config.workspaces.task_delay)
 
