@@ -21,7 +21,7 @@
 in
   pypkgs.buildPythonPackage rec {
     pname = "niri-companion";
-    version = "2.3.0";
+    version = "2.4.0";
 
     # PEP 517/518 build using setuptools declared in pyproject.toml
     pyproject = true;
