@@ -43,6 +43,8 @@ sources = [
 
 ### `watch_dir`
 
+> _default: "~/.config/niri/sources"_
+
 This directory is monitored when you run:
 
 ```
@@ -57,7 +59,7 @@ Define all the KDL configuration files you want to combine. You can split your c
 
 #### Grouping
 
-You can define *config groups* inside `sources` using an array of objects. For example:
+You can define _config groups_ inside `sources` using an array of objects. For example:
 
 ```toml
 sources = [
