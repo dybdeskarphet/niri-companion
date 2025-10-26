@@ -32,14 +32,14 @@ def main():
         task_delay = item.task_delay
 
         _ = subprocess.run(f"niri msg action focus-workspace {str(ws)}", shell=True)
-        time.sleep(config.workspaces.task_delay)
+        time.sleep(0.3)
         _ = subprocess.run(f"niri msg action spawn-sh -- '{command}'", shell=True)
         if task_delay is not None:
             time.sleep(task_delay)
         else:
             time.sleep(config.workspaces.task_delay)
         _ = subprocess.run(f"niri msg action maximize-column", shell=True)
-        time.sleep(config.workspaces.task_delay)
+        time.sleep(0.2)
 
 
 if __name__ == "__main__":
