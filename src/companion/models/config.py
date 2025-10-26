@@ -18,6 +18,7 @@ class GenConfigSection(BaseModel):
 class WorkspaceItem(BaseModel):
     workspace: int
     run: str
+    task_delay: float | None = None
 
 
 class WorkspaceItemsSection(RootModel[dict[str, list[WorkspaceItem]]]):
