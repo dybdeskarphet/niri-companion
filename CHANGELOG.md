@@ -11,6 +11,11 @@
 
 - *(nix)* Update test configuration to run pytest and limit imports during checks
 - *(workspaces)* Shorten the additional delays
+
+### ⚙️ Miscellaneous Tasks
+
+- *(release)* Bump version
+- *(nix)* Bump version for default.nix
 ## [2.3.0] - 2025-09-24
 
 ### 🚀 Features
