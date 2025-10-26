@@ -3,10 +3,14 @@
 ### 🚀 Features
 
 - *(nix)* Add default and shell Nix configurations for niri-companion
+- *(config)* Add per item task_delay option to workspaces
+- *(config)* Add defaults for some of the config options
+- *(workspaces)* Use the per item task_delay option if available
 
 ### 🐛 Bug Fixes
 
 - *(nix)* Update test configuration to run pytest and limit imports during checks
+- *(workspaces)* Shorten the additional delays
 ## [2.3.0] - 2025-09-24
 
 ### 🚀 Features
