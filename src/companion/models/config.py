@@ -12,7 +12,7 @@ class GeneralConfig(BaseModel):
 
 class GenConfigSection(BaseModel):
     sources: list[str | list[ConfigItem]]
-    watch_dir: str
+    watch_dir: str = "~/.config/niri/soruces"
 
 
 class WorkspaceItem(BaseModel):
@@ -28,8 +28,8 @@ class WorkspaceItemsSection(RootModel[dict[str, list[WorkspaceItem]]]):
 
 class WorkspaceConfigSection(BaseModel):
     items: WorkspaceItemsSection
-    dmenu_command: str
-    task_delay: float
+    dmenu_command: str = "rofi -dmenu"
+    task_delay: float = 0.8
 
 
 class AppConfig(BaseModel):
