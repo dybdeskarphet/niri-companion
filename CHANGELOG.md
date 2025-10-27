@@ -1,5 +1,10 @@
 ## [unreleased]
 
+### ⚙️ Miscellaneous Tasks
+
+- *(release)* Create an automatic release action
+## [2.4.0] - 2025-10-26
+
 ### 🚀 Features
 
 - *(nix)* Add default and shell Nix configurations for niri-companion
