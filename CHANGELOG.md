@@ -1,5 +1,20 @@
 ## [unreleased]
 
+### ⚙️ Miscellaneous Tasks
+
+- *(release)* Add release body and filter the release files
+## [3.0.0] - 2025-11-18
+
+### 🚀 Features
+
+- *(genconfig)* [**breaking**] Generate the config when the daemon is started initially
+
+### ⚙️ Miscellaneous Tasks
+
+- *(release)* Create an automatic release action
+- *(release)* Bump version
+## [2.4.0] - 2025-10-26
+
 ### 🚀 Features
 
 - *(nix)* Add default and shell Nix configurations for niri-companion
