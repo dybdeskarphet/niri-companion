@@ -62,6 +62,7 @@ class GenConfig:
     def daemon(self):
         from watchdog.observers import Observer
 
+        self.generate()
         observer = Observer()
         handler = FileChangeHandler(self)
         _ = observer.schedule(handler, config.genconfig.watch_dir)
