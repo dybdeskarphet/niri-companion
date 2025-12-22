@@ -50,8 +50,8 @@ class GenConfig:
     def generate(self):
         # I know it looks ugly but this is faster than checking
         # if use_include is true at every iteration.
-        if self.use_include:
-            with open(config.general.output_path, "w", encoding="utf-8") as outfile:
+        with open(config.general.output_path, "w", encoding="utf-8") as outfile:
+            if self.use_include:
                 for source in config.genconfig.sources:
                     parsed_source_path = return_source(
                         source,
@@ -59,8 +59,7 @@ class GenConfig:
                     )
                     _ = outfile.write(f'include "{parsed_source_path}"')
                     _ = outfile.write("\n")
-        else:
-            with open(config.general.output_path, "w", encoding="utf-8") as outfile:
+            else:
                 for source in config.genconfig.sources:
                     parsed_source_path = return_source(
                         source,
