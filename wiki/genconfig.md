@@ -96,7 +96,7 @@ If no group is specified, the `default` group is used automatically.
 
 # Usage
 
-### Generate Configuration
+## Generate Configuration
 
 ```
 niri-genconfig generate
@@ -118,7 +118,7 @@ niri-genconfig generate cool
 niri-genconfig generate -u cool
 ```
 
-### Run as Daemon
+## Run as Daemon
 
 ```
 niri-genconfig daemon
