@@ -1,8 +1,19 @@
 ## [unreleased]
 
+### 🚀 Features
+
+- *(genconfig)* Add --use-include flag and functionality
+- *(genconfig)* Remove the --use-include flag from daemon
+- *(genconfig)* Watch directories recursively with daemon mode
+
+### 🚜 Refactor
+
+- *(genconfig)* Simplify the config generation function
+
 ### ⚙️ Miscellaneous Tasks
 
 - *(release)* Add release body and filter the release files
+- *(release)* Bump version
 ## [3.0.0] - 2025-11-18
 
 ### 🚀 Features
