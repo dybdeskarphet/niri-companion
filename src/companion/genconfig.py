@@ -77,7 +77,7 @@ class GenConfig:
         self.generate()
         observer = Observer()
         handler = FileChangeHandler(self)
-        _ = observer.schedule(handler, config.genconfig.watch_dir)
+        _ = observer.schedule(handler, config.genconfig.watch_dir, recursive=True)
         observer.start()
         log(
             f"Watching {config.genconfig.watch_dir} for changes, press [yellow]Ctrl+C[/yellow] to stop the daemon."
