@@ -55,7 +55,7 @@ If files inside this directory change, the daemon automatically regenerates your
 
 ### `sources`
 
-Define all the KDL configuration files you want to combine. You can split your configs across multiple files and groups.
+Define all the KDL configuration files you want to combine/include. You can split your configs across multiple files and groups.
 
 #### Grouping
 
@@ -81,7 +81,7 @@ Only the files from the selected group (plus any standalone string items) are in
 niri-genconfig generate cool
 ```
 
-Would combine:
+Would combine/include:
 
 ```
 $XDG_CONFIG_HOME/niri/src/internal.kdl
@@ -102,12 +102,20 @@ If no group is specified, the `default` group is used automatically.
 niri-genconfig generate
 ```
 
-Generates your `config.kdl` (or your custom `output_path`) using your `genconfig` settings.
-
-You can specify a group:
+Combines your `config.kdl` (or your custom `output_path`) using your `genconfig` settings. Or if you want to include the files instead of combining them, use the `-u` flag:
 
 ```
+niri-genconfig generate -u
+```
+
+You can also specify a configuration group:
+
+```shell
+# to combine
 niri-genconfig generate cool
+
+# to include
+niri-genconfig generate -u cool
 ```
 
 ### Run as Daemon
