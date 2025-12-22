@@ -1,5 +1,10 @@
 ## [unreleased]
 
+### ⚙️ Miscellaneous Tasks
+
+- *(gitcliff)* Add workflow_dispatch for running manually
+## [4.0.0] - 2025-12-22
+
 ### 🚀 Features
 
 - *(genconfig)* Add --use-include flag and functionality
