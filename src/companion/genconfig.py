@@ -30,8 +30,9 @@ class FileChangeHandler(FileSystemEventHandler):
 
 
 class GenConfig:
-    def __init__(self, group: str = "default") -> None:
+    def __init__(self, group: str = "default", use_include: bool = False) -> None:
         self.group: str = group
+        self.use_include: bool = use_include
 
     def check_files(self):
         non_existent_files: list[str] = []
@@ -47,15 +48,27 @@ class GenConfig:
             exit(1)
 
     def generate(self):
-        with open(config.general.output_path, "w", encoding="utf-8") as outfile:
-            for source in config.genconfig.sources:
-                parsed_source_path = return_source(
-                    source,
-                    self.group,
-                )
-                with open(parsed_source_path, "r", encoding="utf-8") as infile:
-                    _ = outfile.write(infile.read())
+        # I know it looks ugly but this is faster than checking
+        # if use_include is true at every iteration.
+        if self.use_include:
+            with open(config.general.output_path, "w", encoding="utf-8") as outfile:
+                for source in config.genconfig.sources:
+                    parsed_source_path = return_source(
+                        source,
+                        self.group,
+                    )
+                    _ = outfile.write(f'include "{parsed_source_path}"')
                     _ = outfile.write("\n")
+        else:
+            with open(config.general.output_path, "w", encoding="utf-8") as outfile:
+                for source in config.genconfig.sources:
+                    parsed_source_path = return_source(
+                        source,
+                        self.group,
+                    )
+                    with open(parsed_source_path, "r", encoding="utf-8") as infile:
+                        _ = outfile.write(infile.read())
+                        _ = outfile.write("\n")
 
         log(f"Generation successful! Output written to: {config.general.output_path}")
 
@@ -85,17 +98,33 @@ app = typer.Typer(
     context_settings={"help_option_names": ["-h", "--help"]},
 )
 
+UseIncludeArg = Annotated[
+    bool,
+    typer.Option(
+        "--use-include",
+        "-u",
+        help="Include configs instead of combining in the result config.kdl",
+    ),
+]
+GroupArg = Annotated[str, typer.Argument()]
+
 
 @app.command(help="Generate configuration")
-def generate(group: Annotated[str, typer.Argument()] = "default"):
-    gen = GenConfig(group)
+def generate(
+    group: GroupArg = "default",
+    use_include: UseIncludeArg = False,
+):
+    gen = GenConfig(group, use_include)
     gen.check_files()
     gen.generate()
 
 
 @app.command(help="Start config generation daemon")
-def daemon(group: Annotated[str, typer.Argument()] = "default"):
-    gen = GenConfig(group)
+def daemon(
+    group: GroupArg = "default",
+    use_include: UseIncludeArg = False,
+):
+    gen = GenConfig(group, use_include)
     gen.check_files()
     gen.daemon()
 
