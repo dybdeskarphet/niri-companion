@@ -122,9 +122,8 @@ def generate(
 @app.command(help="Start config generation daemon")
 def daemon(
     group: GroupArg = "default",
-    use_include: UseIncludeArg = False,
 ):
-    gen = GenConfig(group, use_include)
+    gen = GenConfig(group)
     gen.check_files()
     gen.daemon()
 
