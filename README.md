@@ -27,7 +27,7 @@
 
 ## Overview
 
-- `niri-genconfig` – allows using multiple KDL configuration files instead of a single `config.kdl`.
+- `niri-genconfig` – allows having configuration groups for layered `niri ✨` setups
 - `niri-workspaces` – creates sessions for different tasks.
 - `niri-ipcext` – performs IPC-like modifications.
 
