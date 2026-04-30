@@ -7,6 +7,7 @@
 ### ⚙️ Miscellaneous Tasks
 
 - *(gitcliff)* Add workflow_dispatch for running manually
+- *(release)* Bump version
 ## [4.0.0] - 2025-12-22
 
 ### 🚀 Features
