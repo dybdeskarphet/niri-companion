@@ -72,7 +72,7 @@ def create_empty_config(path: Path):
 
     try:
         with open(str(path), "wb") as f:
-            tomli_w.dump(empty_config.model_dump(), f)
+            tomli_w.dump(empty_config.model_dump(exclude_none=True), f)
         log("Config file created successfully!")
         warn(
             "Please edit the configuration file. Default configurations serve as placeholders."
@@ -118,9 +118,8 @@ def expand_config(config: AppConfig):
 
 def load_config():
     try:
-        with open(COMPANION_SETTINGS_PATH, "rb") as f:
-            raw = read_config_file()
-            config = AppConfig(**raw)
+        raw = read_config_file()
+        config = AppConfig(**raw)
     except ValidationError as e:
         from rich.table import Table
         from rich import box
