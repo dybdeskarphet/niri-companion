@@ -1,4 +1,8 @@
-## [unreleased]
+## [4.0.1] - 2026-04-30
+
+### 🐛 Bug Fixes
+
+- *(config)* Fix config.py not prompting for config generation
 
 ### ⚙️ Miscellaneous Tasks
 
