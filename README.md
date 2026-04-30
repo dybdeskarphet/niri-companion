@@ -40,3 +40,5 @@ pipx install niri-companion
 pip install niri-companion
 uv tool install niri-companion
 ```
+
+For Arch-based distributions, you can use the [`niri-companion`](https://aur.archlinux.org/packages/niri-companion) AUR package
