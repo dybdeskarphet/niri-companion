@@ -42,3 +42,9 @@ uv tool install niri-companion
 ```
 
 For Arch-based distributions, you can use the [`niri-companion`](https://aur.archlinux.org/packages/niri-companion) AUR package
+
+For Debian-based distributions, you can use the [`niri-companion`](https://tracker.debian.org/pkg/niri-companion) package (Available in Debian 14 and Above)
+
+```sh
+sudo apt install niri-companion
+```
