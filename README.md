@@ -41,10 +41,9 @@ pip install niri-companion
 uv tool install niri-companion
 ```
 
-For Arch-based distributions, you can use the [`niri-companion`](https://aur.archlinux.org/packages/niri-companion) AUR package
-
-For Debian-based distributions, you can use the [`niri-companion`](https://tracker.debian.org/pkg/niri-companion) package (Available in Debian 14 and Above)
-
-```sh
-sudo apt install niri-companion
-```
+- For Arch-based distributions, you can use the [`niri-companion`](https://aur.archlinux.org/packages/niri-companion) AUR package
+  - `git clone https://aur.archlinux.org/niri-companion.git && cd niri-companion && makepkg -si` **(recommended)**
+  - `paru -S niri-companion`
+  - `yay -S niri-companion`
+- For Debian-based distributions, you can use the [`niri-companion`](https://tracker.debian.org/pkg/niri-companion) package (Available in Debian 14 and Above)
+  - `apt install niri-companion`
