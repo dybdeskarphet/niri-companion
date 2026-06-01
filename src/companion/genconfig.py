@@ -97,14 +97,24 @@ app = typer.Typer(
     context_settings={"help_option_names": ["-h", "--help"]},
 )
 
+CombineArg = Annotated[
+    bool,
+    typer.Option(
+        "--combine",
+        "-c",
+        help="Combine configs instead of including in the result config.kdl",
+    ),
+]
+
 UseIncludeArg = Annotated[
     bool,
     typer.Option(
         "--use-include",
         "-u",
-        help="Include configs instead of combining in the result config.kdl",
+        help="Include configs instead of combining in the result config.kdl (deprecated flag, this is now the default behaviour)",
     ),
 ]
+
 GroupArg = Annotated[str, typer.Argument()]
 
 
@@ -112,8 +122,15 @@ GroupArg = Annotated[str, typer.Argument()]
 def generate(
     group: GroupArg = "default",
     use_include: UseIncludeArg = False,
+    combine: CombineArg = False,
 ):
-    gen = GenConfig(group, use_include)
+    if combine and use_include:
+        raise typer.BadParameter(
+            "Cannot use --combine/-c and --use-include/-u together."
+        )
+
+    is_include_mode = use_include or not combine
+    gen = GenConfig(group, is_include_mode)
     gen.check_files()
     gen.generate()
 
