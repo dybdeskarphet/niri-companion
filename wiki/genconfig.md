@@ -102,20 +102,20 @@ If no group is specified, the `default` group is used automatically.
 niri-genconfig generate
 ```
 
-Combines your `config.kdl` (or your custom `output_path`) using your `genconfig` settings. Or if you want to include the files instead of combining them, use the `-u` flag:
+Adds `include` statements to `config.kdl` (or your custom `output_path`) using the source definitions of the `default` group. Or if you want to combine the files instead of including them, use the `-c` flag:
 
 ```
-niri-genconfig generate -u
+niri-genconfig generate -c
 ```
 
 You can also specify a configuration group:
 
 ```shell
-# to combine
+# to include
 niri-genconfig generate cool
 
-# to include
-niri-genconfig generate -u cool
+# to combine
+niri-genconfig generate -c cool
 ```
 
 ## Run as Daemon
