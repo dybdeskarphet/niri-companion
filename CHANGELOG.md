@@ -1,3 +1,12 @@
+## [5.0.0] - 2026-06-01
+
+### 🚀 Features
+
+- *(genconfig)* [**breaking**] Add --combine and set --use-include as the default behaviour
+
+### ⚙️ Miscellaneous Tasks
+
+- *(release)* Bump version
 ## [4.0.1] - 2026-04-30
 
 ### 🐛 Bug Fixes
