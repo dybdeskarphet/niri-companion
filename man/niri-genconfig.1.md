@@ -1,9 +1,9 @@
 ---
 title: NIRI-GENCONFIG
 section: 1
-date: May 2026
+date: June 2026
 header: niri-companion Manual
-footer: niri-genconfig 4.0.1
+footer: niri-genconfig 5.0.0
 ---
 
 # NAME
@@ -30,7 +30,10 @@ niri-genconfig - niri-companion config generation tool
 Combine source files into the final niri configuration.
 
 **-u, --use-include**
-: Instead of merging file contents, write a file containing KDL `include` statements for each source. Useful for debugging or keeping the output file clean.
+: Instead of merging file contents, write a file containing KDL `include` statements for each source.
+
+**-c, --combine**
+: Instead of using `include` statements, merge the contents of each source to the `config.kdl`.
 
 **GROUP**
 : Select a specific configuration group. Standalone source strings are always included. Objects matching the group name are included. Defaults to "default".
