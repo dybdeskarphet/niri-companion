@@ -3,6 +3,7 @@
 ### ⚙️ Miscellaneous Tasks
 
 - *(pypi)* Add PyPI publisher action
+- *(pypi)* Use the latest uv and checkout packages
 ## [5.0.0] - 2026-06-01
 
 ### 🚀 Features
